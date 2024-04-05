@@ -1,24 +1,18 @@
 <template>
     <div>
-
+        
     </div>
 </template>
 
 <script>
-    import { defineStore } from 'pinia'
+   import { defineStore } from 'pinia'
 
-export const useStore = defineStore('storeId', {
-  // arrow function recommended for full type inference
-  state: () => {
-    return {
-      // all these properties will have their type inferred automatically
-      count: 0,
-      name: 'Eduardo',
-      isAdmin: true,
-      items: [],
-      hasChanged: true,
-    }
-  },
+// You can name the return value of `defineStore()` anything you want,
+// but it's best to use the name of the store and surround it with `use`
+// and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
+// the first argument is a unique id of the store across your application
+export const useAlertsStore = defineStore('alerts', {
+  // other options...
 })
 </script>
 
