@@ -16,8 +16,9 @@ async function getData() {
 };
  onMounted (() => {
   getData();
-  const props = defineProps(data)
-  const emits
+  const props = defineProps(emit)
+  
+ 
 })</script>  
 
 
