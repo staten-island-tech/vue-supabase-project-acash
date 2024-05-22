@@ -1,14 +1,15 @@
 <script setup>
 import { ref } from 'vue'
-import { supabase } from '../supabase'
-
+/* import { supabase } from '@/supabase';
+ */
 const loading = ref(false)
 const email = ref('')
+
 
 const handleLogin = async () => {
   try {
     loading.value = true
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signUp({
       email: email.value,
     })
     if (error) throw error
