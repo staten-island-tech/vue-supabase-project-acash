@@ -34,7 +34,7 @@ getData(URL);
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/auth">Auth login</RouterLink>
-        <RouterLink to="/Accounts">Account base</RouterLink>
+        <RouterLink to="/accounts">Account base</RouterLink>
       </nav>
     </div>
   </header>

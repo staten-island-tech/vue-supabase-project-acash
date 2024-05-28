@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-/* import { supabase } from '@/supabase';
- */
+ /*import { supabase } from '@/supabase';*/
+ 
 const loading = ref(false)
 const email = ref('')
 
