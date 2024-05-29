@@ -29,8 +29,8 @@ getData(URL);
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-
-      <nav>
+    
+  <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/auth">Auth login</RouterLink>
