@@ -22,10 +22,3 @@
     }
   };
   </script>
-  <template>
-    <div>
-      <h2>Sign Up</h2>
-      <button @click="signUp">Sign Up with Email</button>
-    </div>
-  </template>
-  

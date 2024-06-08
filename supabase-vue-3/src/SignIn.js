@@ -4,3 +4,6 @@ export async function signInWithEmail() {
       password: 'example-password',
     })
   }
+
+  document.querySelector(".SignIn").addEventListener("click" ,
+   signInWithEmail())

@@ -2,7 +2,7 @@
 
 import { supabase } from '@/supabase';
 
-export async function signUpNewUser(email, password) {
+ async function signUpNewUser(email, password) {
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -20,3 +20,4 @@ export async function signUpNewUser(email, password) {
     throw error;
   }
 }
+document.querySelector(".SignUp").addEventListener("click", signUpNewUser())
