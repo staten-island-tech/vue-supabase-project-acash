@@ -1,44 +1,35 @@
-<script setup>
-import { ref, onMounted } from 'vue'
-import { supabase } from './supabase'
-import { useUser } from './stores/user'
-
-const session = ref()
-const userStore = useUser()
-
-onMounted(() => {
-  supabase.auth.getSession().then(({ data }) => {
-    session.value = data.session
-    userStore.setUser(data.session?.user)
-  })
-
-  supabase.auth.onAuthStateChange((_, _session) => {
-    session.value = _session
-    userStore.setUser(_session?.user)
-  })
-})
-
-function signOut() {
-  supabase.auth.signOut()
-}
-</script>
-
 <template>
-  <div class="container" style="padding: 50px 0 100px 0">
+  <div class="moviecontainer">
     <nav>
-      <router-link to="/">Sign In</router-link>
+      <router-link v-if="!session" to="/signin">Sign In</router-link>
+      <router-link v-if="session" to="/movies">All Movies</router-link>
       <router-link v-if="session" to="/account">Account</router-link>
-      <router-link v-if="session" to="/movies">Movies</router-link>
-      <button v-if="session" @click="signOut">Sign Out</button>
+      <button v-if="session" @click="RealSignOut">Sign Out</button>
     </nav>
     <router-view></router-view>
   </div>
 </template>
 
-<style>
-nav {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+<script setup>
+import { useUsers } from './stores/stores';
+import { onMounted, ref } from 'vue';
+import { supabase } from './supabase';
+
+const session = ref(null);
+const userStore = useUsers();
+
+onMounted(() => {
+  supabase.auth.onAuthStateChange((_event, _session) => {
+    session.value = _session;
+    userStore.setSession(_session);
+  });
+
+  session.value = supabase.auth.session();
+  userStore.setSession(session.value);
+});
+
+async function RealSignOut(){
+  await userStore.SignOut();
+  session.value = null;
 }
-</style>
+</script>
