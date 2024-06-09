@@ -10,6 +10,8 @@ const reviewlist = () => {
             if (data) {
                 fetchmovies(data)
             }
+            else {error}
+            console.log(error)
             }
         })
         fetchmovies()
