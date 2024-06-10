@@ -16,7 +16,7 @@ import TheWelcome from '../components/TheWelcome.vue'
       <li>Search for your favorite movies</li>
       <li>Discover new releases</li>
       <li>Explore trending movies</li>
-      <!-- Add more features if needed -->
+    
     </ul>
   </div>
 </template>
