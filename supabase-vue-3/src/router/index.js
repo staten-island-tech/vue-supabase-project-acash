@@ -1,5 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
-
+import { createRouter, createWebHistory } from 'vue-router'
 import Movies from '../components/Movies.vue';
 import Account from '../components/Account.vue';
 import SignIn from '../components/SignIn.vue';
