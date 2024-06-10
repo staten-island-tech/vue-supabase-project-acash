@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Auth from '@/components/Auth.vue'
 import Accounts from '@/components/Accounts.vue'
+import SearchMovies from '@/components/SearchMovies.vue'
 
 
 const router = createRouter({
@@ -21,6 +22,12 @@ const router = createRouter({
       path: '/auth',
       name: 'Auth',
       component:  Auth
+    },
+
+    {
+      path: '/search',
+      name: 'Search for Movie',
+      component: SearchMovies
     },
     {
       path: '/about',
