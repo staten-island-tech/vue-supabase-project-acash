@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { useUsers } from './stores/stores';
+import { useUsers } from './stores/stores.js';
 import { onMounted, ref } from 'vue';
 import { supabase } from './supabase';  
 
