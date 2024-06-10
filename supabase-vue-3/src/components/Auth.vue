@@ -1,44 +1,60 @@
 <script setup>
-import { ref } from 'vue'
-import { supabase } from '../supabase'
+import { ref } from 'vue';
+import { supabase } from '../supabase';
 import { useUsers } from '../stores/stores.js';
 
-const loading = ref(false)
-const email = ref('')
-const password = ref('')
-const isSignUp = ref(false)  
+const loading = ref(false);
+const email = ref('');
+const password = ref('');
+const isSignUp = ref(false);
 const userStore = useUsers();
 
 const handleAuth = async () => {
   try {
-    loading.value = true
-    let data, error
+    loading.value = true;
+    let data, error;
 
     if (isSignUp.value) {
-      ({ data, error } = await supabase.auth.signUp({
+      const response = await supabase.auth.signUp({
         email: email.value,
         password: password.value,
-      }))
-      console.log(data)
+      });
+      if (response.error) {
+        const { message, data } = response.error;
+        console.error("Error:", message);
+        if (data) {
+          console.error("Validation Errors:", data);
+        }
+        throw new Error(message); // Throw an error to be caught by the catch block
+      } else {
+        console.log("SignUp successful:", response.data);
+      }
     } else {
-      ({ data, error } = await supabase.auth.signInWithPassword({
+      const response = await supabase.auth.signInWithPassword({
         email: email.value,
         password: password.value,
-      }))
+      });
+      data = response.data;
+      error = response.error;
     }
 
-    if (error) throw error
-    userStore.setUser(data.user)  
-    console.log("Your In")
+    if (error) {
+      throw error;
+    }
+
+    userStore.setUser(data.user);
+    console.log("You're In");
   } catch (error) {
+    console.error(error);
     if (error instanceof Error) {
-      alert(error.message)
+      alert(error.message);
     }
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>
+
 
 <template>
   <form class="row flex-center flex" @submit.prevent="handleAuth">

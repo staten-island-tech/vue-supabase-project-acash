@@ -13,6 +13,6 @@ app.use(router);
 app.mount('#app');
 
 supabase.auth.onAuthStateChange((event, session) => {
-  const useUser = useUsers; 
-  useUser.setSession(session); 
+  const userStore = useUsers(); 
+  userStore.setSession(session); 
 });

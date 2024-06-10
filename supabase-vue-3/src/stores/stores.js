@@ -5,7 +5,8 @@ import { ref } from 'vue';
 export const useUsers = defineStore('users', {
     state: () => ({
       userData: null,
-      session: null
+      session: null,
+      reviews:[]
     }),
   
     actions: {
@@ -55,17 +56,18 @@ export const useUsers = defineStore('users', {
       }
      },
   
-   async Reviewing (review){
-      try{
-          const { data, error } = await supabase
+     async Reviewing(review) {
+      try {
+        const { data, error } = await supabase
           .from('Reviews')
-          .insert([review])
-          if (error)
-          throw error
-      this.review.push(data[0])
-  } catch(error){
-    console.log(error)
-  }},
+          .insert([review]);
+        if (error) throw error;
+        this.reviews.push(data[0]);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    
   
   async reviewdata (){
       try{
@@ -92,19 +94,20 @@ console.log("Changed Succesfully <3")
       return error
     }
 },
- async getProfile(userid){
-     try{
-        const {data , error} = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("userid" , userid)
-        .single() 
-          if (error)
-            throw error 
-     }  catch(error){
-      console.log("Get Profile Dont Work Muddy")
-     }
-  },
+async getProfile(userid) {
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("userid", userid)
+      .single();
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.log("Get Profile Didn't Work", error.message);
+    throw error;
+  }
+},
 
   
   
