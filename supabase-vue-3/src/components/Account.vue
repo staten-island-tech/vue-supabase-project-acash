@@ -28,7 +28,7 @@ const password = ref('')
 const Usestores = useUsers()
 
 onMounted(async () => {
-  session.value = await Usestores.getSession()
+  session.value = await Usestores.setSession()
   await getProfile()
 })
 

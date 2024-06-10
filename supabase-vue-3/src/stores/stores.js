@@ -14,37 +14,49 @@ export const useUsers = defineStore('users', {
         this.session = session;
       },
 
-     async SigningUp(email, password) {
+      async SigningUp(email, password) {
         try {
           const { data, error } = await supabase.auth.signUp({
-              email,
-              password,
-            });
-          if (error){
-              throw {error}
-             }
-          this.userData = data.users
-          console.log("Welcome Monkey")
-          } catch (error) {
-            console.log(error)
-          return {error}
+            email,
+            password,
+          });
+          console.log("Sign Up Data:", data);
+          if (error) {
+            throw error; 
+          }
+          if (!data) {
+            throw new Error("Sign up data is undefined");
+          }
+          this.userData = data.users;
+          console.log(data.users)
+          console.log("Welcome Monkey");
+        } catch (error) {
+          console.error("Error signing up:", error);
+          return { error };
         }
       },
-         async SigningIn(email , password){
-          try{
-              const { data, error } = await supabase.auth.signInWithPassword({
-                  email,
-                  password,
-  })
-            if(error)
-          throw error
-          this.userData = data.users
-          console.log("Hey Baby UwU")
-             }catch (error){
-              console.log(error)
-              return error
-             }
-  },
+      
+      async SigningIn(email , password) {
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          console.log("Sign In Data:", data);
+          if (error) {
+            throw error;
+          }
+          if (!data) {
+            throw new Error("Sign in data is undefined");
+          }
+          this.userData = data.users;
+          console.log("Hey Baby UwU");
+        } catch (error) {
+          console.error("Error signing in:", error);
+          return { error };
+        }
+      },
+      
      async SignOut(){
       try{
           const { error } = await supabase.auth.signOut()
@@ -60,11 +72,11 @@ export const useUsers = defineStore('users', {
       try {
         const { data, error } = await supabase
           .from('Reviews')
-          .insert([review]);
+          .insert([review]); 
         if (error) throw error;
-        this.reviews.push(data[0]);
+        console.log( data);
       } catch (error) {
-        console.log(error);
+        console.log( error.message);
       }
     },
     
@@ -101,6 +113,7 @@ async getProfile(userid) {
       .select("*")
       .eq("userid", userid)
       .single();
+      console.log(data)
     if (error) throw error;
     return data;
   } catch (error) {

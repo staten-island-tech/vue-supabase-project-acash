@@ -20,6 +20,15 @@
         <button @click="showReviewForm(movie.title)">Write Review</button>
       </div>
     </div>
+
+    <div class="reviews">
+      <h2>Reviews</h2>
+      <div v-for="review in reviews" :key="review.id" class="review-card">
+        <h3>{{ review.Title }}</h3>
+        <p>Rating: {{ review.Rating }}</p>
+        <p>{{ review.Review }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -39,12 +48,24 @@ const fetchMovies = async () => {
   try {
     const response = await fetch('https://api.themoviedb.org/3/movie/popular?api_key=26906062d4fd4de4f857063554f6f6d3&page=1');
     const data = await response.json();
+    console.log(data)
     movies.value = data.results;
   } catch (error) {
     console.log(error);
   }
 };
-onMounted(fetchMovies);
+const fetchReviews = async () => {
+  try {
+    await userStore.reviewdata();
+    reviews.value = userStore.reviews;
+  } catch (error) {
+    console.error("Error fetching reviews:", error.message);
+  }
+};
+onMounted(async () => {
+  await fetchMovies();
+  await fetchReviews();
+});
 
 const showReviewForm = (title) => {
   console.log('Showing review form for:', title);
@@ -55,14 +76,14 @@ const showReviewForm = (title) => {
 const submitReview = async () => {
   try {
     await userStore.Reviewing({
-      movieTitle: selectedMovie.value,
-      rating: rating.value,
-      reviewText: reviewText.value,
+      Title: selectedMovie.value,
+      Rating: rating.value,
+      Review: reviewText.value,
     });
     console.log("Nice Opinion");
     showForm.value = false; 
   } catch (error) {
-    console.log(error);
+    console.log( error.message);
   }
 };
 </script>

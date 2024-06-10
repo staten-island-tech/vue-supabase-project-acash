@@ -13,28 +13,30 @@ const handleAuth = async () => {
   try {
     loading.value = true;
     let data, error;
-
+console.log(data)
     if (isSignUp.value) {
       const response = await supabase.auth.signUp({
         email: email.value,
         password: password.value,
       });
       if (response.error) {
-        const { message, data } = response.error;
-        console.error("Error:", message);
+        const { data } = response.error;
+        console.log(data)
+        console.error("Error");
         if (data) {
           console.error("Validation Errors:", data);
         }
         throw new Error(message); // Throw an error to be caught by the catch block
       } else {
         console.log("SignUp successful:", response.data);
-      }
+      } 
     } else {
       const response = await supabase.auth.signInWithPassword({
         email: email.value,
         password: password.value,
       });
       data = response.data;
+      console.log(data)
       error = response.error;
     }
 
