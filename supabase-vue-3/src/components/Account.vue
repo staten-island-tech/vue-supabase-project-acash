@@ -6,12 +6,8 @@
         <input id="email" type="text" :value="session.user.email" disabled>
       </div>
       <div>
-        <label for="username">Name</label>
-        <input id="username" type="text" v-model="username">
-      </div>
-      <div>
-        <label for="website">Website</label>
-        <input id="website" type="url" v-model="website">
+        <label for="password">Password</label>
+       
       </div>
       <div>
         <button type="submit" :disabled="loading">Update</button>
@@ -22,33 +18,38 @@
 </template>
 
 <script setup>
-import { useUsers } from '../stores/stores';
+import { useUsers } from '../stores/stores.js';
 import { ref, onMounted } from 'vue';
 
 const loading = ref(false)
 const session = ref(null)
-const username = ref('')
-const website = ref('')
-const Usestores = useUsers
+const email = ref('')
+const password = ref('')
+const Usestores = useUsers()
 onMounted(async () => {
   session.value = await Usestores.getSession()
   await getProfile()
 })
-async function getProfile() {
+const getProfile = async() => {
   try {
-    const profile = await Usestores.getProfile()
-    if (profile) {
-      username.value = profile.username
-      website.value = profile.website
+    
+    const profiles = await Usestores.getProfile(session.value.user.id)
+    if (profiles) {
+      setemail(profiles.email)
+      
     }
   } catch (error) {
     alert(error.message)
   }
+  const setemail =() =>{
+    email.value = value;
+  }
 }
-async function updateProfile(){
+const updateProfile = async() =>{
 try{
   loading.value=true 
-  await Usestores.updateProfile({ username: username.value, website: website.value})
+  await Usestores.UpdateLogin({ email: email.value, password: password.value})
+
 } catch(error){
   console.log(error)
 } finally {
@@ -56,7 +57,7 @@ try{
 }
 }
 
-async function signOut(){
+const signOut = async() =>{
   try{
     loading.value=true 
     await Usestores.SignOut()

@@ -6,7 +6,7 @@ import { useUsers } from '../stores/stores.js';
 const loading = ref(false)
 const email = ref('')
 const password = ref('')
-const isSignUp = ref(false)  // Toggle between sign-up and sign-in
+const isSignUp = ref(false)  
 const userStore = useUsers();
 
 const handleAuth = async () => {
@@ -19,6 +19,7 @@ const handleAuth = async () => {
         email: email.value,
         password: password.value,
       }))
+      console.log(data)
     } else {
       ({ data, error } = await supabase.auth.signInWithPassword({
         email: email.value,

@@ -23,7 +23,7 @@ export const useUsers = defineStore('users', {
               throw {error}
              }
           this.userData = data.users
-          showTooltip("Welcome Monkey")
+          console.log("Welcome Monkey")
           } catch (error) {
             console.log(error)
           return {error}
@@ -86,7 +86,7 @@ async UpdateLogin(email, password){
         if(error) 
     throw error 
 this.userData= {...userData, ...data.user}
-showTooltip("Changed Succesfully <3")
+console.log("Changed Succesfully <3")
     } catch (error) {
       console.log("Couldn't Change Your Login <(^ w ^)>")
       return error

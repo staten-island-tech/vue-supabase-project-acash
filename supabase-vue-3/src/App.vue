@@ -28,6 +28,9 @@ onMounted(() => {
   userStore.setSession(session.value);
 });
 
+
+</script>
+<script>
 async function RealSignOut(){
   await userStore.SignOut();
   session.value = null;
