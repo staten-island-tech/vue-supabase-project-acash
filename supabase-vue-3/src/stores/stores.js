@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {supabase} from '../supabase'
 import { ref } from 'vue';
 
-export const useUsers = defineStore('users', {
+export const useUsers = defineStore('user', {
     state: () => ({
       userData: null,
       session: null,
@@ -27,8 +27,8 @@ export const useUsers = defineStore('users', {
           if (!data) {
             throw new Error("Sign up data is undefined");
           }
-          this.userData = data.users;
-          console.log(data.users)
+          this.userData = data.user;
+          console.log(data.user)
           console.log("Welcome Monkey");
         } catch (error) {
           console.error("Error signing up:", error);
