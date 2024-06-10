@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Movies from '../views/Movies.vue';
-import Account from '../views/Account.vue';
-import SignIn from '../views/SignIn.vue';
+import Movies from '../components/Movies.vue';
+import Account from '../components/Account.vue';
+import SignIn from '../components/SignIn.vue';
 import Auth from '../components/Auth.vue';
 
 const routes = [

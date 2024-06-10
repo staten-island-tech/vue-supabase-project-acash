@@ -9,7 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "pinia": "^2.1.7"
+    "pinia": "^2.1.7",
+    "vue-router": "^4.0.13"
   },
   "devDependencies": {
     "vite": "^5.2.13"

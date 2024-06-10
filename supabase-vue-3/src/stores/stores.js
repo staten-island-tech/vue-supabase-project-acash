@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import {supabase} from '../supabase'
-
+import { ref } from 'vue';
 
 export const useUsers = defineStore('users', {
     state: () => ({
@@ -9,6 +9,10 @@ export const useUsers = defineStore('users', {
     }),
   
     actions: {
+      setSession(session) {
+        this.session = session;
+      },
+
      async SigningUp(email, password) {
         try {
           const { data, error } = await supabase.auth.signUp({
@@ -21,7 +25,7 @@ export const useUsers = defineStore('users', {
           this.userData = data.users
           showTooltip("Welcome Monkey")
           } catch (error) {
-          showTooltip(error)
+            console.log(error)
           return {error}
         }
       },
@@ -34,9 +38,9 @@ export const useUsers = defineStore('users', {
             if(error)
           throw error
           this.userData = data.users
-          showTooltip("Hey Baby UwU")
+          console.log("Hey Baby UwU")
              }catch (error){
-              showTooltip(error)
+              console.log(error)
               return error
              }
   },
@@ -47,7 +51,7 @@ export const useUsers = defineStore('users', {
               throw error
           this.userData= []
       } catch (error) {
-          showTooltip("we had trouble Signing Out")
+          console.log("we had trouble Signing Out")
       }
      },
   
@@ -60,7 +64,7 @@ export const useUsers = defineStore('users', {
           throw error
       this.review.push(data[0])
   } catch(error){
-      showTooltip(error)
+    console.log(error)
   }},
   
   async reviewdata (){
@@ -72,7 +76,7 @@ export const useUsers = defineStore('users', {
           throw error
         this.reviews = data
       } catch(error){
-         showTooltip("Can't Find Reviews ")   
+        console.log("Can't Find Reviews ")   
       }},
 async UpdateLogin(email, password){
     try{
@@ -84,7 +88,7 @@ async UpdateLogin(email, password){
 this.userData= {...userData, ...data.user}
 showTooltip("Changed Succesfully <3")
     } catch (error) {
-      showTooltip("Couldn't Change Your Login <(^ w ^)>")
+      console.log("Couldn't Change Your Login <(^ w ^)>")
       return error
     }
 },
@@ -98,9 +102,10 @@ showTooltip("Changed Succesfully <3")
           if (error)
             throw error 
      }  catch(error){
-        showTooltip("Get Profile Dont Work Muddy")
+      console.log("Get Profile Dont Work Muddy")
      }
-  }
+  },
+
   
   
   

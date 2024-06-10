@@ -13,7 +13,7 @@
 <script setup>
 import { useUsers } from './stores/stores';
 import { onMounted, ref } from 'vue';
-import { supabase } from './supabase';
+import { supabase } from './supabase';  
 
 const session = ref(null);
 const userStore = useUsers();
@@ -24,7 +24,7 @@ onMounted(() => {
     userStore.setSession(_session);
   });
 
-  session.value = supabase.auth.session();
+  session.value = supabase.auth.session;
   userStore.setSession(session.value);
 });
 

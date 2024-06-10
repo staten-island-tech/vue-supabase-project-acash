@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 import { supabase } from '../supabase'
-import { useUser } from '../stores/user'  // Import your user store
+import { useUsers } from '../stores/stores.js';
 
 const loading = ref(false)
 const email = ref('')
 const password = ref('')
 const isSignUp = ref(false)  // Toggle between sign-up and sign-in
-const userStore = useUser()
+const userStore = useUsers();
 
 const handleAuth = async () => {
   try {
@@ -27,8 +27,8 @@ const handleAuth = async () => {
     }
 
     if (error) throw error
-    userStore.setUser(data.user)  // Set the user in the store
-    alert('Successfully authenticated!')
+    userStore.setUser(data.user)  
+    console.log("Your In")
   } catch (error) {
     if (error instanceof Error) {
       alert(error.message)
