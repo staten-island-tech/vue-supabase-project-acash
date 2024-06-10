@@ -13,7 +13,7 @@ import TheWelcome from '../components/TheWelcome.vue'
   <div class="home-container">
     <h1>Welcome to {{ websiteName }}, a platform for people who love movies.</h1>
     <ul>
-      <li>Search for your favorite movies</li>
+      <li>Review your favorite movies</li>
       <li>Discover new releases</li>
       <li>Explore trending movies</li>
     
@@ -25,7 +25,7 @@ import TheWelcome from '../components/TheWelcome.vue'
 export default {
   data() {
     return {
-      websiteName: 'Our Website',
+      websiteName: 'Ka$h Kizzy Studios',
       movies: [],
     };
   },

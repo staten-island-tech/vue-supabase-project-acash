@@ -21,8 +21,8 @@
 .read-the-docs {
   color: #888;
 }
-</script>
+/* </script>
 
 <style lang="scss" scoped>
-
+ */
 </style>

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="moviecontainer">
     <nav>
       <router-link v-if="!session" to="/signin">Sign In</router-link>
@@ -9,13 +9,14 @@
     <router-view></router-view>
   </div>
 </template>
-
+ -->
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import SearchMovies from './components/SearchMovies.vue';
 
-const session = ref(null);
+import { RouterLink, RouterView } from 'vue-router'
+
+import SearchMovies from './components/SearchMovies.vue';
+ 
+/* const session = ref(null);
 const userStore = useUsers();
 
 
@@ -29,20 +30,18 @@ async function getData(URL){
       console.log(data);
     } catch (error) {
     }
-    }
   }
-getData(URL);
+}
+getData(URL);  
 
 
-</script>
+ */
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  
     
+  <div>
   <nav>
         <RouterLink to="/search">Search for Movie</RouterLink>
         <RouterLink to="/">Home</RouterLink>
@@ -56,14 +55,18 @@ getData(URL);
   <RouterView />
 </template>
 
-<style scoped>
+</script>
+
+<style lang="scss" scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
 }
-onMounted(() => {
+</style>
+<!-- /* onMounted(()) => {
   supabase.auth.onAuthStateChange((_event, _session) => {
     session.value = _session;
     userStore.setSession(_session);
 })
-  });
+  }); */
+ -->
