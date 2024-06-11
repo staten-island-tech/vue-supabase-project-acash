@@ -1,45 +1,3 @@
-<script setup>
-import { ref } from 'vue'
-import { supabase } from '../supabase'
-import { useUsers } from '../stores/stores.js';
-
-const loading = ref(false)
-const email = ref('')
-const password = ref('')
-const isSignUp = ref(false)  
-const userStore = useUsers();
-
-const handleAuth = async () => {
-  try {
-    loading.value = true
-    let data, error
-
-    if (isSignUp.value) {
-      ({ data, error } = await supabase.auth.signUp({
-        email: email.value,
-        password: password.value,
-      }))
-      console.log(data)
-    } else {
-      ({ data, error } = await supabase.auth.signInWithPassword({
-        email: email.value,
-        password: password.value,
-      }))
-    }
-
-    if (error) throw error
-    userStore.setUser(data.user)  
-    console.log("Your In")
-  } catch (error) {
-    if (error instanceof Error) {
-      alert(error.message)
-    }
-  } finally {
-    loading.value = false
-  }
-}
-</script>
-
 <template>
   <form class="row flex-center flex" @submit.prevent="handleAuth">
     <div class="col-6 form-widget">
@@ -68,3 +26,35 @@ const handleAuth = async () => {
   </form>
 </template>
 
+<script setup>
+import { ref } from 'vue';
+import { supabase } from '../supabase';
+import { useUsers } from '../stores/stores.js';
+
+const loading = ref(false);
+const email = ref('');
+const password = ref('');
+const isSignUp = ref(false);
+const userStore = useUsers();
+
+const handleAuth = async () => {
+  try {
+    loading.value = true;
+    let response;
+
+    if (isSignUp.value) {
+      response = await userStore.SigningUp(email.value, password.value);
+    } else {
+      response = await userStore.SigningIn(email.value, password.value);
+    }
+
+    if (response.error) throw response.error;
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  } finally {
+    loading.value = false;
+  }
+};
+</script>

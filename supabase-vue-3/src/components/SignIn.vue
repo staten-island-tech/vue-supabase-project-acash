@@ -25,17 +25,14 @@ const toggleAuthMode = () => {
 
 const handleAuth = async () => {
   try {
-    let data, error;
     if (SignUp.value) {
-      ({ data, error } = await userStore.SigningUp(email.value, password.value));
+      await userStore.SigningUp(email.value, password.value);
     } else {
-      ({ data, error } = await userStore.SigningIn(email.value, password.value));
+      await userStore.SigningIn(email.value, password.value);
     }
-    if (error) throw error;
   } catch (error) {
-  alert(error.message);
-}
-
+    alert(error.message);
+  }
 };
 </script>
 

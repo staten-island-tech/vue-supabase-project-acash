@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router'; 
 import { createPinia } from 'pinia';
 import { supabase } from './supabase';  
 import { useUsers } from './stores/stores.js'; 
+import router from './router/index.js';
 const app = createApp(App);
 
 const pinia = createPinia();
@@ -13,6 +13,6 @@ app.use(router);
 app.mount('#app');
 
 supabase.auth.onAuthStateChange((event, session) => {
-  const useUser = useUsers; 
-  useUser.setSession(session); 
+  const userStore = useUsers(); 
+  userStore.setSession(session); 
 });
