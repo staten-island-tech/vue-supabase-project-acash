@@ -4,6 +4,7 @@
       <router-link v-if="!session" to="/signin">Sign In</router-link>
       <router-link v-if="session" to="/movies">All Movies</router-link>
       <router-link v-if="session" to="/account">Account</router-link>
+      <router-link v-if="session" to="/search">Search For Movies</router-link>
       <button v-if="session" @click="RealSignOut">Sign Out</button>
     </nav>
     <router-view></router-view>
