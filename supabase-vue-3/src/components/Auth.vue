@@ -1,63 +1,3 @@
-<script setup>
-import { ref } from 'vue';
-import { supabase } from '../supabase';
-import { useUsers } from '../stores/stores.js';
-
-const loading = ref(false);
-const email = ref('');
-const password = ref('');
-const isSignUp = ref(false);
-const userStore = useUsers();
-
-const handleAuth = async () => {
-  try {
-    loading.value = true;
-    let data, error;
-console.log(data)
-    if (isSignUp.value) {
-      const response = await supabase.auth.signUp({
-        email: email.value,
-        password: password.value,
-      });
-      if (response.error) {
-        const { data } = response.error;
-        console.log(data)
-        console.error("Error");
-        if (data) {
-          console.error("Validation Errors:", data);
-        }
-        throw new Error(message); // Throw an error to be caught by the catch block
-      } else {
-        console.log("SignUp successful:", response.data);
-      } 
-    } else {
-      const response = await supabase.auth.signInWithPassword({
-        email: email.value,
-        password: password.value,
-      });
-      data = response.data;
-      console.log(data)
-      error = response.error;
-    }
-
-    if (error) {
-      throw error;
-    }
-
-    userStore.setUser(data.user);
-    console.log("You're In");
-  } catch (error) {
-    console.error(error);
-    if (error instanceof Error) {
-      alert(error.message);
-    }
-  } finally {
-    loading.value = false;
-  }
-};
-</script>
-
-
 <template>
   <form class="row flex-center flex" @submit.prevent="handleAuth">
     <div class="col-6 form-widget">
@@ -86,3 +26,35 @@ console.log(data)
   </form>
 </template>
 
+<script setup>
+import { ref } from 'vue';
+import { supabase } from '../supabase';
+import { useUsers } from '../stores/stores.js';
+
+const loading = ref(false);
+const email = ref('');
+const password = ref('');
+const isSignUp = ref(false);
+const userStore = useUsers();
+
+const handleAuth = async () => {
+  try {
+    loading.value = true;
+    let response;
+
+    if (isSignUp.value) {
+      response = await userStore.SigningUp(email.value, password.value);
+    } else {
+      response = await userStore.SigningIn(email.value, password.value);
+    }
+
+    if (response.error) throw response.error;
+    console.log(response.data);
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  } finally {
+    loading.value = false;
+  }
+};
+</script>

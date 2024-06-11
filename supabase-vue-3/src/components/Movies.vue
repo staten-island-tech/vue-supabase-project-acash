@@ -37,10 +37,11 @@ import { ref, onMounted } from 'vue';
 import { useUsers } from '../stores/stores.js';
 
 const movies = ref([]);
-const selectedMovie = ref("");
+const selectedMovie = ref('');
 const showForm = ref(false);
 const rating = ref(1);
 const reviewText = ref('');
+const reviews = ref([]);
 
 const userStore = useUsers();
 
@@ -48,27 +49,27 @@ const fetchMovies = async () => {
   try {
     const response = await fetch('https://api.themoviedb.org/3/movie/popular?api_key=26906062d4fd4de4f857063554f6f6d3&page=1');
     const data = await response.json();
-    console.log(data)
     movies.value = data.results;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching movies:", error);
   }
 };
+
 const fetchReviews = async () => {
   try {
     await userStore.reviewdata();
     reviews.value = userStore.reviews;
   } catch (error) {
-    console.error("Error fetching reviews:", error.message);
+    console.error("Error fetching reviews:", error);
   }
 };
+
 onMounted(async () => {
   await fetchMovies();
   await fetchReviews();
 });
 
 const showReviewForm = (title) => {
-  console.log('Showing review form for:', title);
   selectedMovie.value = title;
   showForm.value = true;
 };
@@ -80,10 +81,11 @@ const submitReview = async () => {
       Rating: rating.value,
       Review: reviewText.value,
     });
-    console.log("Nice Opinion");
-    showForm.value = false; 
+    console.log("Review submitted");
+    showForm.value = false;
+    await fetchReviews(); // Refresh the reviews after submitting
   } catch (error) {
-    console.log( error.message);
+    console.error("Error submitting review:", error);
   }
 };
 </script>

@@ -11,25 +11,22 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+import { supabase } from './supabase';
 import { useUsers } from './stores/stores.js';
-import { onMounted, ref } from 'vue';
-import { supabase } from './supabase';  
 
 const session = ref(null);
 const userStore = useUsers();
+
+const RealSignOut = async () => {
+  await userStore.SignOut();
+  session.value = null;
+};
 
 onMounted(() => {
   supabase.auth.onAuthStateChange((_event, _session) => {
     session.value = _session;
     userStore.setSession(_session);
   });
-
-  session.value = supabase.auth.session;
-  userStore.setSession(session.value);
 });
-
-async function RealSignOut(){
-  await userStore.SignOut();
-  session.value = null;
-}
 </script>

@@ -1,128 +1,116 @@
-import { defineStore } from 'pinia'
-import {supabase} from '../supabase'
-import { ref } from 'vue';
+import { defineStore } from 'pinia';
+import { supabase } from '../supabase';
 
-export const useUsers = defineStore('user', {
-    state: () => ({
-      userData: null,
-      session: null,
-      reviews:[]
-    }),
-  
-    actions: {
-      setSession(session) {
-        this.session = session;
-      },
-
-      async SigningUp(email, password) {
-        try {
-          const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-          });
-          console.log("Sign Up Data:", data);
-          if (error) {
-            throw error; 
-          }
-          if (!data) {
-            throw new Error("Sign up data is undefined");
-          }
-          this.userData = data.user;
-          console.log(data.user)
-          console.log("Welcome Monkey");
-        } catch (error) {
-          console.error("Error signing up:", error);
-          return { error };
-        }
-      },
-      
-      async SigningIn(email , password) {
-        try {
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-          });
-          console.log("Sign In Data:", data);
-          if (error) {
-            throw error;
-          }
-          if (!data) {
-            throw new Error("Sign in data is undefined");
-          }
-          this.userData = data.users;
-          console.log("Hey Baby UwU");
-        } catch (error) {
-          console.error("Error signing in:", error);
-          return { error };
-        }
-      },
-      
-     async SignOut(){
-      try{
-          const { error } = await supabase.auth.signOut()
-          if(error) 
-              throw error
-          this.userData= []
-      } catch (error) {
-          console.log("we had trouble Signing Out")
-      }
-     },
-  
-     async Reviewing(review) {
+export const useUsers = defineStore('userStore', {
+  state: () => ({
+    session: null,
+    user: null,
+    reviews: [],
+  }),
+  actions: {
+    setSession(session) {
+      this.session = session;
+      this.user = session?.user || null;
+    },
+    async SignOut() {
       try {
-        const { data, error } = await supabase
-          .from('Reviews')
-          .insert([review]); 
+        const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        console.log( data);
+        this.session = null;
+        this.user = null;
       } catch (error) {
-        console.log( error.message);
+        console.error("Error signing out:", error);
+      }
+    },
+    async SigningUp(email, password) {
+      try {
+        const { user, error: SignUpError } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+        if (SignUpError) throw SignUpError;
+        if (!user) throw new Error("User data is undefined");
+    
+        const { data, error:InsertError } = await supabase
+          .from('profiles')
+          .insert([{
+            email: user.email,
+            password: password,
+          }]);
+        if (InsertError) throw InsertError;
+    
+        console.log("User signed up:", user);
+      } catch (error) {
+        console.error("Error signing up:", error);
+        throw error;
       }
     },
     
-  
-  async reviewdata (){
-      try{
-          const {data, error} = await supabase
-          .from ('Reviews')
-          .select('*')
-          if (error)
-          throw error
-        this.reviews = data
-      } catch(error){
-        console.log("Can't Find Reviews ")   
-      }},
-async UpdateLogin(email, password){
-    try{
+    
+    async SigningIn(email, password) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) throw error;
+        if (!data || !data.user) throw new Error("Sign in data is undefined or user is null");
+        this.user = data.user;
+        console.log("User signed in:", data.user);
+      } catch (error) {
+        console.error("Error signing in:", error);
+        throw error;
+      }
+    },
+    async Reviewing(review) {
+      try {
+        const { data, error } = await supabase
+          .from('Reviews')
+          .insert([review]);
+        if (error) throw error;
+        console.log("Review inserted:", data);
+      } catch (error) {
+        console.error("Error inserting review:", error);
+      }
+    },
+    async reviewdata() {
+      try {
+        const { data, error } = await supabase
+          .from('Reviews')
+          .select('*');
+        if (error) throw error;
+        this.reviews = data;
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    },
+    async UpdateLogin({ email, password }) {
+      try {
         const { data, error } = await supabase.auth.updateUser({
-            email,
-            password})
-        if(error) 
-    throw error 
-this.userData= {...userData, ...data.user}
-console.log("Changed Succesfully <3")
-    } catch (error) {
-      console.log("Couldn't Change Your Login <(^ w ^)>")
-      return error
-    }
-},
-async getProfile(userid) {
-  try {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("userid", userid)
-      .single();
-      console.log(data)
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.log("Get Profile Didn't Work", error.message);
-    throw error;
-  }
-},
-
-  
-  
-  
-   }})
+          email,
+          password,
+        });
+        if (error) throw error;
+        this.user = { ...this.user, ...data.user };
+        console.log("User updated:", data.user);
+      } catch (error) {
+        console.error("Error updating user:", error);
+        throw error;
+      }
+    },
+    async getProfile(userId) {
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('userid', userId)
+          .single();
+        if (error) throw error;
+        return data;
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        throw error;
+      }
+    },
+  },
+});
