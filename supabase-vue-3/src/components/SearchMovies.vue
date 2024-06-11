@@ -1,4 +1,6 @@
+
 <template>
+
     <div class="container">
       <input 
         type="text" 
@@ -14,12 +16,20 @@
         <div v-for="movie in movies" :key="movie.id" class="movie-card">
           <img :src="getPosterUrl(movie.poster_path)" alt="Movie Poster" class="movie-poster"/>
           <h2 class="movie-title">{{ movie.title }}</h2>
+          <button @click="showReviewForm(movie.title)">Write Review</button>
         </div>
       </div>
     </div>
   </template>
   
   <script>
+
+
+
+  const showReviewForm = (title) => {
+  selectedMovie.value = title;
+  showForm.value = true;
+};
   export default {
     name: 'SearchMovies',
     data() {

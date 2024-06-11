@@ -71,7 +71,7 @@ onMounted(async () => {
   await fetchReviews();
 });
 
-const showReviewForm = (title) => {
+ const showReviewForm = (title) => {
   selectedMovie.value = title;
   showForm.value = true;
 };
