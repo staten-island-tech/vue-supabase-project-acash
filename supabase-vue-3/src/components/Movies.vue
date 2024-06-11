@@ -50,9 +50,11 @@ const fetchMovies = async () => {
     const response = await fetch('https://api.themoviedb.org/3/movie/popular?api_key=26906062d4fd4de4f857063554f6f6d3&page=1');
     const data = await response.json();
     movies.value = data.results;
+    return data
   } catch (error) {
     console.error("Error fetching movies:", error);
   }
+
 };
 
 const fetchReviews = async () => {
@@ -83,7 +85,7 @@ const submitReview = async () => {
     });
     console.log("Review submitted");
     showForm.value = false;
-    await fetchReviews(); // Refresh the reviews after submitting
+    await fetchReviews(); 
   } catch (error) {
     console.error("Error submitting review:", error);
   }

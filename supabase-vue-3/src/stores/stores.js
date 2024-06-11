@@ -31,13 +31,14 @@ export const useUsers = defineStore('userStore', {
         if (error) throw error;
         if (!users) throw new Error("User data is undefined");
         
-        const { data, error: insertError } = await supabase.from('profiles')
+        const { data, error: insertError } = await supabase
+        .from('profiles')
           .insert([{ email: users.email, password }]);
         if (insertError) throw insertError;
         
-        console.log("User signed up:", user);
+        console.log("User signed up:", users);
         
-        return { user };
+        return { users };
       } catch (error) {
         console.error("Error signing up:", error);
         return { error }; 
