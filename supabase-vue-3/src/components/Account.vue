@@ -14,6 +14,7 @@
       </div>
     </form>
     <button v-if="session" @click="signOut" :disabled="loading">Sign Out</button>
+    <button v-if="session" @click="updateProfile" :disabled="loading">Update</button>
   </div>
 </template>
 

@@ -28,23 +28,26 @@ export const useUsers = defineStore('userStore', {
           email,
           password,
         });
+        console.log("Sign up response:", user, SignUpError);
         if (SignUpError) throw SignUpError;
         if (!user) throw new Error("User data is undefined");
     
-        const { data, error:InsertError } = await supabase
+        const { data, error: InsertError } = await supabase
           .from('profiles')
           .insert([{
             email: user.email,
-            password: password,
+            password: user.password,
           }]);
         if (InsertError) throw InsertError;
     
         console.log("User signed up:", user);
+        return { user }; 
       } catch (error) {
         console.error("Error signing up:", error);
         throw error;
       }
     },
+    
     
     
     async SigningIn(email, password) {
