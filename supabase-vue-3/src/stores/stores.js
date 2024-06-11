@@ -24,16 +24,24 @@ export const useUsers = defineStore('userStore', {
     },
     async SigningUp(email, password) {
       try {
-        const { users, error } = await supabase.auth.signUp({
+        const { user, error } = await supabase.auth.signUp({
           email,
           password,
         });
         if (error) throw error;
-        if (!users) throw new Error("User data is undefined");
+        if (!user) throw new Error("User data is undefined");
         
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        const { data, error: insertError } = await supabase.from('profiles')
+          .insert([{ email: user.email, password }]);
+=======
+>>>>>>> Stashed changes
         const { data, error: insertError } = await supabase
         .from('profiles')
           .insert([{ email: users.email, password }]);
+>>>>>>> 0701dcbd7e56ac09091a9f70c6fc8be3abdf8290
         if (insertError) throw insertError;
         
         console.log("User signed up:", users);
