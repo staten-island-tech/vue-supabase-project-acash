@@ -21,7 +21,7 @@
 <script setup>
 import { useUsers } from '../stores/stores.js';
 import { ref, onMounted } from 'vue';
-
+import { supabase } from '../supabase.js';
 const loading = ref(false);
 const session = ref(null);
 const email = ref('');
@@ -66,4 +66,5 @@ const signOut = async () => {
     loading.value = false;
   }
 };
+  
 </script>

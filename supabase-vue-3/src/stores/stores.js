@@ -18,40 +18,34 @@ export const useUsers = defineStore('userStore', {
         if (error) throw error;
         this.session = null;
         this.user = null;
+        reload();
       } catch (error) {
         console.error("Error signing out:", error);
       }
     },
     async SigningUp(email, password) {
       try {
-        const { user, error } = await supabase.auth.signUp({
+        const { data: user, error } = await supabase.auth.signUp({
           email,
           password,
         });
         if (error) throw error;
         if (!user) throw new Error("User data is undefined");
-        
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-        const { data, error: insertError } = await supabase.from('profiles')
-          .insert([{ email: user.email, password }]);
-=======
->>>>>>> Stashed changes
-        const { data, error: insertError } = await supabase
-        .from('profiles')
-          .insert([{ email: users.email, password }]);
->>>>>>> 0701dcbd7e56ac09091a9f70c6fc8be3abdf8290
+    
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert([{ email: email, password }]);
         if (insertError) throw insertError;
-        
-        console.log("User signed up:", users);
-        
-        return { users };
+    
+        console.log("User signed up:", user);
+    
+        return { user };
       } catch (error) {
         console.error("Error signing up:", error);
         return { error }; 
       }
     },
+    
     
     
     
@@ -106,12 +100,12 @@ export const useUsers = defineStore('userStore', {
         throw error;
       }
     },
-    async getProfile(userId) {
+    async getProfile(id) {
       try {
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
-          .eq('userid', userId)
+          .eq('id', id)
           .single();
         if (error) throw error;
         return data;
