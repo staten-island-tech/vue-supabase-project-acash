@@ -1,11 +1,11 @@
 <template>
   <div class="auth-container">
     <form @submit.prevent="handleAuth">
-      <h2>{{ SignUp ? 'Sign Up' : 'Sign In' }}</h2>
+      <h2>{{ isSignUp ? 'Sign Up' : 'Sign In' }}</h2>
       <input type="email" v-model="email" placeholder="Email" required />
       <input type="password" v-model="password" placeholder="Password" required />
-      <button type="submit">{{ SignUp ? 'Sign Up' : 'Sign In' }}</button>
-      <button type="button" @click="toggleAuthMode">{{ SignUp ? 'Switch to Sign In' : 'Switch to Sign Up' }}</button>
+      <button type="submit">{{ isSignUp ? 'Sign Up' : 'Sign In' }}</button>
+      <button type="button" @click="toggleAuthMode">{{ isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up' }}</button>
     </form>
   </div>
 </template>
@@ -16,16 +16,16 @@ import { useUsers } from '../stores/stores';
 
 const email = ref('');
 const password = ref('');
-const SignUp = ref(false);
+const isSignUp = ref(false);
 const userStore = useUsers();
 
 const toggleAuthMode = () => {
-  SignUp.value = !SignUp.value;
+  isSignUp.value = !isSignUp.value;
 };
 
 const handleAuth = async () => {
   try {
-    if (SignUp.value) {
+    if (isSignUp.value) {
       await userStore.SigningUp(email.value, password.value);
     } else {
       await userStore.SigningIn(email.value, password.value);

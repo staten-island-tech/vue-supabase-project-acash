@@ -35,16 +35,17 @@ export const useUsers = defineStore('userStore', {
         const { data, error: insertError } = await supabase
           .from('profiles')
           .insert([{ email: user.email, password: password }]);
-        if (insertError) throw insertError;
-        
+          if (insertError) throw insertError;
+    
         console.log("User signed up:", user);
-        
+    
         return { user };
       } catch (error) {
         console.error("Error signing up:", error);
         return { error }; 
       }
     },
+    
     
     
     
