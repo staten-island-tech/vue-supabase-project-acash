@@ -7,6 +7,16 @@
       placeholder="Search movie here" 
       class="search-bar"
     />
+    <div v-if="showForm">
+      <h3>Write Review for {{ selectedMovie }}</h3>
+      <form @submit.prevent="submitReview">
+        <label for="rating">Rating (out of 5):</label>
+        <input type="number" id="rating" v-model="rating" min="1" max="5" required>
+        <label for="reviewText">Review:</label>
+        <textarea id="reviewText" v-model="reviewText" required></textarea>
+        <button type="submit">Submit Review</button>
+      </form>
+    </div>
     <button @click="searchMovies" class="search-button">Search</button>
     <div v-if="isLoading" class="loading-text">Loading...</div>
     <div v-else-if="movies.length === 0" class="no-results">No results found.</div>
@@ -18,16 +28,7 @@
       </div>
     </div>
 
-    <div v-if="showForm">
-      <h3>Write Review for {{ selectedMovie }}</h3>
-      <form @submit.prevent="submitReview">
-        <label for="rating">Rating (out of 5):</label>
-        <input type="number" id="rating" v-model="rating" min="1" max="5" required>
-        <label for="reviewText">Review:</label>
-        <textarea id="reviewText" v-model="reviewText" required></textarea>
-        <button type="submit">Submit Review</button>
-      </form>
-    </div>
+   
   </div>
 
   <div class="reviews">
