@@ -18,7 +18,7 @@ export const useUsers = defineStore('userStore', {
         if (error) throw error;
         this.session = null;
         this.user = null;
-        reload();
+        location.reload();
       } catch (error) {
         console.error("Error signing out:", error);
       }
@@ -33,9 +33,9 @@ export const useUsers = defineStore('userStore', {
         if (!user) throw new Error("User data is undefined");
     
         const { error: insertError } = await supabase
-          .from('profiles')
-          .insert([{ email: email, password }]);
-        if (insertError) throw insertError;
+        .from('profiles')
+        .insert([{ id: user.id, email, password }]);
+      ;if (insertError) throw insertError;
     
         console.log("User signed up:", user);
     
@@ -45,6 +45,7 @@ export const useUsers = defineStore('userStore', {
         return { error }; 
       }
     },
+    
     
     
     
