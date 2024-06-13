@@ -35,11 +35,7 @@ export const useUsers = defineStore('userStore', {
         }
         const { data: profileData, error: profileError } = await supabase
           .from('profiles')
-          .insert([{ email, password }]);
-    
-        if (profileError) {
-          throw profileError;
-        }
+      .insert([{ email , password }]);
         return { user, profileData };
       } catch (error) {
         console.error("Sign-Up Error:", error);
@@ -53,15 +49,6 @@ export const useUsers = defineStore('userStore', {
           .select('*')
           .eq('email', email)
           .eq('password', password)
-          .single();
-    
-        if (error) {
-          throw error;
-        }
-    
-        if (!data) {
-          throw new Error("User not found or invalid credentials");
-        }
     
         
         this.session = supabase.auth.getSession();
