@@ -25,33 +25,29 @@ export const useUsers = defineStore('userStore', {
     },
     async SigningUp(email, password) {
       try {
-        const { data: user, error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
+        const { error } = await supabase
+          .from('profiles')
+          .insert([{ email, password }]);
         if (error) throw error;
-        if (!user) throw new Error("User data is undefined");
-        const { error: insertError } = await supabase
-        .from('profiles')
-        .insert([{ email, password }]);
-      ;if (insertError) throw insertError;
-      console.log("User signed up:", user);
-      return { user };
+
+   
+        await this.SigningIn(email, password);
       } catch (error) {
-        console.error("Error signing up:", error);}},
-    
-    
-    
+        console.error("Error signing up:", error);
+      }
+    },
     async SigningIn(email, password) {
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        if (!data || !data.user) throw new Error("Sign in data is undefined or user is null");
-        this.user = data.user;
-        console.log("User signed in:", data.user);
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('email', email)
+          .eq('password', password)
+          .single();
+        if (error || !data) throw new Error("Invalid email or password");
+        this.user = data;
+        this.session = { user: data };
+        console.log("User signed in:", data);
       } catch (error) {
         console.error("Error signing in:", error);
         throw error;

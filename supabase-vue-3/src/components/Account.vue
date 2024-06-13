@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <form class="form-widget" @submit.prevent="updateProfile" v-if="session">
+  <div v-if="user">
+    <form class="form-widget" @submit.prevent="updateProfile">
       <div>
         <label for="email">Email</label>
-        <input id="email" type="text" :value="session.user.email" disabled>
+        <input id="email" type="text" :value="user.email" disabled>
       </div>
       <div>
         <label for="password">Password</label>
@@ -13,42 +13,26 @@
         <button type="submit" :disabled="loading">Update</button>
       </div>
     </form>
-    <button v-if="session" @click="signOut" :disabled="loading">Sign Out</button>
-    <button v-if="session" @click="updateProfile" :disabled="loading">Update</button>
+    <button @click="signOut" :disabled="loading">Sign Out</button>
+  </div>
+  <div v-else>
+    <p>Please sign in to access your account.</p>
   </div>
 </template>
 
 <script setup>
 import { useUsers } from '../stores/stores.js';
-import { ref, onMounted } from 'vue';
-import { supabase } from '../supabase.js';
+import { ref, onMounted, computed } from 'vue';
+
 const loading = ref(false);
-const session = ref(null);
-const email = ref('');
 const password = ref('');
 const userStore = useUsers();
-
-onMounted(async () => {
-  session.value = supabase.auth.session();
-  userStore.setSession(session.value);
-  await getProfile();
-});
-
-const getProfile = async () => {
-  try {
-    const profile = await userStore.getProfile(session.value.user.id);
-    if (profile) {
-      email.value = profile.email;
-    }
-  } catch (error) {
-    alert(error.message);
-  }
-};
+const user = computed(() => userStore.user);
 
 const updateProfile = async () => {
   try {
     loading.value = true;
-    await userStore.UpdateLogin({ email: email.value, password: password.value });
+    await userStore.UpdateLogin({ email: user.email, password: password.value });
   } catch (error) {
     console.log(error);
   } finally {
@@ -66,5 +50,4 @@ const signOut = async () => {
     loading.value = false;
   }
 };
-  
 </script>
