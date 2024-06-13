@@ -25,15 +25,25 @@ export const useUsers = defineStore('userStore', {
     },
     async SigningUp(email, password) {
       try {
-        const { error } = await supabase
+        const { user, error } = await supabase.auth.signUp({
+          email,
+          password,
+        });
+    
+        if (error) {
+          throw error;
+        }
+        const { data: profileData, error: profileError } = await supabase
           .from('profiles')
           .insert([{ email, password }]);
-        if (error) throw error;
-
-   
-        await this.SigningIn(email, password);
+    
+        if (profileError) {
+          throw profileError;
+        }
+        return { user, profileData };
       } catch (error) {
-        console.error("Error signing up:", error);
+        console.error("Sign-Up Error:", error);
+        throw error;
       }
     },
     async SigningIn(email, password) {
@@ -44,15 +54,24 @@ export const useUsers = defineStore('userStore', {
           .eq('email', email)
           .eq('password', password)
           .single();
-        if (error || !data) throw new Error("Invalid email or password");
-        this.user = data;
-        this.session = { user: data };
+    
+        if (error) {
+          throw error;
+        }
+    
+        if (!data) {
+          throw new Error("User not found or invalid credentials");
+        }
+    
+        
+        this.session = supabase.auth.getSession();
         console.log("User signed in:", data);
       } catch (error) {
         console.error("Error signing in:", error);
         throw error;
       }
     },
+    
     async Reviewing(review) {
       try {
         const { data, error } = await supabase

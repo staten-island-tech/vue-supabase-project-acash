@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import { createPinia } from 'pinia';
-import { supabase } from './supabase';
+import { supabase } from './supabase.js';
 import { useUsers } from './stores/stores.js';
 import router from './router/index.js';
 
